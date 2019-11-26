@@ -1,0 +1,97 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Locations-user10",
+    "description": "Locations-user10",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/locations": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Returns an array of location records",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/location"
+                  }
+                },
+                "examples": {
+                  "all": {
+                    "value": "  [\n      {\n          \"id\": 1,\n          \"name\": \"International Inc Corporate Office\",\n          \"location\": {\n              \"lat\": 51.5013673,\n              \"lng\": -0.1440787\n          },\n          \"type\": \"headquarter\",\n          \"status\": \"1\"\n      },\n      {\n          \"id\": 2,\n          \"name\": \"International Inc North America\",\n          \"location\": {\n              \"lat\": 40.6976701,\n              \"lng\": -74.259876\n          },\n          \"type\": \"office\",\n          \"status\": \"1\"\n      },\n      {\n          \"id\": 3,\n          \"name\": \"International Inc France\",\n          \"location\": {\n              \"lat\": 48.859,\n              \"lng\": 2.2069746\n          },\n          \"type\": \"office\",\n          \"status\": \"1\"\n      }\n  ]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/locations/{id}": {
+      "get": {
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "location id",
+            "required": true,
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a single location record",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/location"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+      "location": {
+        "title": "Root Type for location",
+        "description": "The root of the location type's schema.",
+        "type": "object",
+        "properties": {
+          "id": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "location": {
+            "type": "object",
+            "properties": {
+              "lat": {
+                "format": "double",
+                "type": "number"
+              },
+              "lng": {
+                "format": "double",
+                "type": "number"
+              }
+            }
+          },
+          "type": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+    }
+  }
+}

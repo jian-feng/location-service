@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring       http://camel.apache.org/schema/spring/camel-spring.xsd">
+   <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+      <restConfiguration bindingMode="json" component="servlet"
+         contextPath="fuse" enableCORS="true" host="0.0.0.0" port="8080"/>
+      <route id="rest1">
+         <from id="_from1" uri="direct:rest1"/>
+         <to id="_to1" uri="sql:select * from locations?dataSource=#dataSource"/>
+         <process id="_process1" ref="locationResultProcessor"/>
+      </route>
+      <route id="rest2">
+         <from id="_from2" uri="direct:rest2"/>
+         <to id="_to2" uri="sql:select * from locations where id=cast(:#id as int)?dataSource=#dataSource"/>
+         <process id="_process2" ref="locationResultProcessor"/>
+         <choice id="_choice1">
+            <when id="_when1">
+               <simple>${body.size} &gt; 0</simple>
+               <setBody id="_setBody1">
+                  <simple>${body[0]}</simple>
+               </setBody>
+            </when>
+            <otherwise id="_otherwise1">
+               <setHeader headerName="HTTP_RESPONSE_CODE" id="_setHeader1">
+                  <constant>404</constant>
+               </setHeader>
+            </otherwise>
+         </choice>
+      </route>
+   </camelContext>
+</beans>
